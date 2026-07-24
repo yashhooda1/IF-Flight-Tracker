@@ -1,0 +1,23 @@
+# Render Blueprint. In the Render dashboard: New + -> Blueprint -> pick this repo.
+# Render reads this file, then prompts you for the two secret values below.
+services:
+  - type: web
+    name: if-flight-tracker
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Pin Python 3.12 so prebuilt wheels are used (avoids the 3.14 Rust build).
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      - key: IF_MOCK
+        value: "false"
+      # sync:false -> Render asks you to type these in the dashboard; they are
+      # never written to the repo.
+      - key: IF_API_KEY
+        sync: false
+      - key: IF_OWM_API_KEY
+        sync: false
