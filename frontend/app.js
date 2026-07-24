@@ -450,8 +450,29 @@ async function loadDestination(f) {
 
   const a = dest.destination;
   const lt = localTime(a.tz);
+
+  // Origin block (shown above Destination). dest.origin is the full airport
+  // record when the ICAO resolves; fall back to just the code, or nothing.
+  const o = dest.origin;
+  let originHtml = '';
+  if (o) {
+    const olt = localTime(o.tz);
+    originHtml =
+      '<div class="hint">Origin</div>' +
+      '<div class="desthead">' +
+      '<div><div class="callsign">' + esc(o.icao) + (o.iata ? ' / ' + esc(o.iata) : '') + '</div>' +
+      '<div class="sub">' + esc([o.city, o.country].filter(Boolean).join(', ')) + '</div></div>' +
+      (olt ? '<div class="localtime">' + esc(olt) + '<div class="sub">local</div></div>' : '') +
+      '</div>' +
+      '<div class="sub" style="margin-bottom:12px">' + esc(o.name) + '</div>';
+  } else if (dest.originIcao) {
+    originHtml = '<div class="hint">Origin</div>' +
+      '<div class="callsign" style="margin-bottom:12px">' + esc(dest.originIcao) + '</div>';
+  }
+
   if (box()) {
     box().innerHTML =
+      originHtml +
       '<div class="hint">Destination</div>' +
       '<div class="desthead">' +
       '<div><div class="callsign">' + esc(a.icao) + (a.iata ? ' / ' + esc(a.iata) : '') + '</div>' +
