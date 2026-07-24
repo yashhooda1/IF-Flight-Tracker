@@ -1,9 +1,20 @@
 # Infinite Flight Tracker
 
+**▶ Live demo: [if-flight-tracker.onrender.com](https://if-flight-tracker.onrender.com)**
+
 Live map, ATC board, pilot lookup and logbook for the Infinite Flight Live API v2.
 
 FastAPI backend (holds the API key, caches, enriches) + vanilla JS/Leaflet frontend.
 No build step, no npm.
+
+Real-time aircraft on the selected server, coloured by flight phase; click any flight
+for altitude/speed/track plus its flown track and filed plan; a destination panel with
+live ETA, arrival-airport info, current weather + 5-day forecast and a city photo;
+switchable satellite imagery; a day/night terminator; and cloud/wind/precip/temperature
+weather overlays. Pilot lookup shows grade, hours, landings and a paginated logbook.
+
+> Hosted on Render's free tier, so the first load after a quiet spell waits ~50s while
+> the instance wakes (a spinner shows meanwhile).
 
 ---
 
