@@ -1,8 +1,0 @@
-# Lower bounds, not hard pins, so pip picks wheels that match your Python
-# version (including 3.14). If you're on an older Python these still work.
-fastapi>=0.115
-uvicorn[standard]>=0.34
-httpx[socks]>=0.28
-pydantic>=2.11
-pydantic-settings>=2.7
-airportsdata>=20241001
