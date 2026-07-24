@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Infinite Flight Tracker</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+<div id="map"></div>
+
+<header id="topbar">
+  <div class="brand">
+    <span class="dot"></span>
+    <strong>Infinite Flight Tracker</strong>
+  </div>
+  <select id="serverSelect" title="Live server"></select>
+  <div id="status" class="status">connecting…</div>
+  <div class="spacer"></div>
+  <label class="toggle"><input type="checkbox" id="showAtc" checked /> ATC</label>
+  <label class="toggle"><input type="checkbox" id="showAirports" checked /> Airports</label>
+  <label class="toggle"><input type="checkbox" id="autoRefresh" checked /> Auto <span id="countdown">15</span>s</label>
+  <button id="refreshBtn" title="Refresh now">&#x21bb;</button>
+</header>
+
+<aside id="panel">
+  <nav class="tabs">
+    <button class="tab active" data-tab="flights">Flights</button>
+    <button class="tab" data-tab="atc">ATC</button>
+    <button class="tab" data-tab="pilot">Pilot</button>
+  </nav>
+
+  <section class="tabpane active" id="pane-flights">
+    <input id="flightSearch" type="search" placeholder="Filter by callsign, username, VA…" />
+    <div class="hint" id="flightCount"></div>
+    <ul id="flightList" class="list"></ul>
+  </section>
+
+  <section class="tabpane" id="pane-atc">
+    <div class="hint" id="atcCount"></div>
+    <ul id="atcList" class="list"></ul>
+    <div class="hint">Busiest airports</div>
+    <ul id="aptList" class="list"></ul>
+  </section>
+
+  <section class="tabpane" id="pane-pilot">
+    <form id="pilotForm">
+      <input id="pilotName" type="search" placeholder="Community forum username…" />
+      <button type="submit">Look up</button>
+    </form>
+    <div id="pilotResult"></div>
+  </section>
+</aside>
+
+<div id="detail" class="detail hidden">
+  <button class="close" id="detailClose">&times;</button>
+  <div id="detailBody"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
