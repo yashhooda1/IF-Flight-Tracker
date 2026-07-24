@@ -6,6 +6,7 @@ proxy (and cache, and enrich) the Live API v2.
 
 from __future__ import annotations
 
+import hashlib
 import math
 import mimetypes
 from contextlib import asynccontextmanager
@@ -13,7 +14,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, Query, Request
-from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -316,9 +317,23 @@ async def favicon():
 if FRONTEND.exists():
     app.mount("/static", StaticFiles(directory=FRONTEND), name="static")
 
+    def _asset_version() -> str:
+        """Short hash of app.js. Changes whenever the file changes, so we can
+        append it as ?v=... and force browsers to fetch the fresh script after a
+        deploy — no more hard-refresh needed."""
+        try:
+            return hashlib.md5((FRONTEND / "app.js").read_bytes()).hexdigest()[:8]
+        except OSError:
+            return "1"
+
+    # Computed once at startup; a new deploy restarts the process and recomputes.
+    _ASSET_V = _asset_version()
+
     # Allow HEAD as well as GET so platform port probes (which use HEAD /) get a
     # 200 rather than a noisy 405.
     @app.get("/")
     @app.head("/")
     async def index():
-        return FileResponse(FRONTEND / "index.html")
+        html = (FRONTEND / "index.html").read_text(encoding="utf-8")
+        html = html.replace("/static/app.js", f"/static/app.js?v={_ASSET_V}")
+        return HTMLResponse(html)
