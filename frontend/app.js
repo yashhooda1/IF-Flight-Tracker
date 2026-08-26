@@ -47,11 +47,10 @@ function phaseColor(f) {
 const map = L.map('map', { zoomControl: false, worldCopyJump: true }).setView([25, 5], 3);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Base layers — dark vector (default) and Esri satellite. Both key-free.
-const darkBase = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap &copy; CARTO · flight data: Infinite Flight Live API',
-  maxZoom: 18,
-}).addTo(map);
+const darkBase = L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  { attribution: 'Tiles &copy; Esri · flight data: Infinite Flight Live API', maxZoom: 16 }
+).addTo(map);
 const satelliteBase = L.tileLayer(
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
   { attribution: 'Imagery &copy; Esri · flight data: Infinite Flight Live API', maxZoom: 18 }
